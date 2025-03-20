@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Table(
         name = "clientes",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"cpf"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"cli_cpf"})
 )
 @Data
 @NoArgsConstructor
@@ -19,16 +19,19 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cli_id")
     private Integer id;
 
-    @Column(length = 100)
+    @Column(name = "cli_nome", length = 100)
     private String nome;
 
-    @Column(length = 14)
+    @Column(name = "cli_cpf", length = 14)
     private String cpf;
 
+    @Column(name = "cli_data_nascimento")
     private LocalDate dataNascimento;
 
+    @Column(name = "cli_endereco")
     private String endereco;
 
     public Cliente(String nome, String cpf, LocalDate dataNascimento, String endereco) {
