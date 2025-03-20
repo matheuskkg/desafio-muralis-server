@@ -18,7 +18,10 @@ import java.util.Optional;
 public class ClienteService {
 
     @Autowired
-    ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ContatoService contatoService;
 
     private Cliente validarCliente(ClienteRequest request) {
         try {
@@ -66,6 +69,7 @@ public class ClienteService {
     }
 
     public void excluir(Integer id) {
+        contatoService.excluirTodosPorClienteId(id);
         clienteRepository.deleteById(id);
     }
 }

@@ -17,7 +17,7 @@ public record ClienteRequest(
         @Pattern(regexp = "^(\\d{4}-\\d{2}-\\d{2})?$", message = "A data de nascimento é inválida.")
         String dataNascimento,
 
-        @Size(max = 255, message = "O endereço do cliente deve conter no máximo 255 caracteres.")
+        @Size(max = 255, message = "O endereço do cliente excedeu o limite de caracteres.")
         String endereco
 ) {
 }

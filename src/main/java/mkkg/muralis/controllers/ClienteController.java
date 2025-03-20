@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ClienteController {
 
     @Autowired
-    ClienteService clienteService;
+    private ClienteService clienteService;
 
     @PostMapping
     public ResponseEntity cadastrarCliente(@Valid @RequestBody ClienteRequest request) {

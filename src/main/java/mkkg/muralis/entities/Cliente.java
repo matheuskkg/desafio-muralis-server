@@ -22,10 +22,10 @@ public class Cliente {
     @Column(name = "cli_id")
     private Integer id;
 
-    @Column(name = "cli_nome", length = 100)
+    @Column(name = "cli_nome", length = 100, nullable = false)
     private String nome;
 
-    @Column(name = "cli_cpf", length = 14)
+    @Column(name = "cli_cpf", length = 14, nullable = false)
     private String cpf;
 
     @Column(name = "cli_data_nascimento")
