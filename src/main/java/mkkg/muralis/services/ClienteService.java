@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -60,8 +59,12 @@ public class ClienteService {
         salvar(c);
     }
 
-    public Optional<Cliente> buscarPorNomeCpf(String nomeCpf) {
-        return clienteRepository.findByNomeOrCpf(nomeCpf, nomeCpf);
+    public List<Cliente> buscarPorNomeCpf(String nome, String cpf) {
+        if (!nome.isBlank() && !cpf.isBlank()) {
+            return clienteRepository.findByNomeAndCpf(nome, cpf).stream().toList();
+        } else {
+            return clienteRepository.findByNomeOrCpf(nome, cpf);
+        }
     }
 
     public List<Cliente> buscarTodos() {

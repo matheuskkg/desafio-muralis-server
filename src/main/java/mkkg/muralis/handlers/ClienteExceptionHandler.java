@@ -1,5 +1,6 @@
 package mkkg.muralis.handlers;
 
+import mkkg.muralis.exceptions.ClienteNaoEncontradoException;
 import mkkg.muralis.exceptions.CpfEmUsoException;
 import mkkg.muralis.exceptions.DataNascimentoInvalidaException;
 import mkkg.muralis.util.ExceptionHandlerUtil;
@@ -18,6 +19,11 @@ public class ClienteExceptionHandler {
 
     @ExceptionHandler(DataNascimentoInvalidaException.class)
     public ResponseEntity handleDataNascimentoInvalidaException(DataNascimentoInvalidaException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionHandlerUtil.getErrorsMap(e.getMessage()));
+    }
+
+    @ExceptionHandler(ClienteNaoEncontradoException.class)
+    public ResponseEntity handleClienteNaoEncontradoException(ClienteNaoEncontradoException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionHandlerUtil.getErrorsMap(e.getMessage()));
     }
 }

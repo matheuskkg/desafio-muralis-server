@@ -3,13 +3,14 @@ package mkkg.muralis.controllers;
 import jakarta.validation.Valid;
 import mkkg.muralis.dtos.request.ClienteRequest;
 import mkkg.muralis.entities.Cliente;
+import mkkg.muralis.exceptions.ClienteNaoEncontradoException;
 import mkkg.muralis.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
@@ -32,15 +33,15 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/by{nomeCpf}")
-    public ResponseEntity buscarPorNomeCpf(@RequestParam String nomeCpf) {
-        Optional<Cliente> optionalCliente = clienteService.buscarPorNomeCpf(nomeCpf);
+    @GetMapping("/by{nome}{cpf}")
+    public ResponseEntity buscarPorNomeCpf(@RequestParam(defaultValue = "") String nome, @RequestParam(defaultValue = "") String cpf) {
+        List<Cliente> clientes = clienteService.buscarPorNomeCpf(nome, cpf);
 
-        if (optionalCliente.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(optionalCliente.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (clientes.isEmpty()) {
+            throw new ClienteNaoEncontradoException("Não foi encontrado nenhum cliente com este nome e/ou cpf.");
         }
+
+        return ResponseEntity.status(HttpStatus.OK).body(clientes);
     }
 
     @GetMapping
