@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
+@CrossOrigin
 public class ClienteController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class ClienteController {
             throw new ClienteNaoEncontradoException("Não foi encontrado nenhum cliente com este nome e/ou cpf.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(clientes);
+        return ResponseEntity.status(HttpStatus.OK).body(clientes.stream().map(Cliente::toDto).toList());
     }
 
     @GetMapping

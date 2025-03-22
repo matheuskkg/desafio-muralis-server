@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mkkg.muralis.dtos.response.ClienteResponse;
 
 import java.time.LocalDate;
 
@@ -38,6 +39,15 @@ public class Cliente {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
-        this.endereco = !endereco.isBlank() ? endereco.trim() : null;
+        this.endereco = endereco != null ? endereco.trim() : null;
+    }
+
+    public ClienteResponse toDto() {
+        return new ClienteResponse(
+                id,
+                nome,
+                cpf,
+                dataNascimento != null ? dataNascimento.toString() : null,
+                endereco);
     }
 }

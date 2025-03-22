@@ -61,9 +61,9 @@ public class ClienteService {
 
     public List<Cliente> buscarPorNomeCpf(String nome, String cpf) {
         if (!nome.isBlank() && !cpf.isBlank()) {
-            return clienteRepository.findByNomeAndCpf(nome, cpf).stream().toList();
+            return clienteRepository.findByNomeIgnoreCaseAndCpf(nome, cpf).stream().toList();
         } else {
-            return clienteRepository.findByNomeOrCpf(nome, cpf);
+            return clienteRepository.findByNomeIgnoreCaseOrCpf(nome, cpf);
         }
     }
 

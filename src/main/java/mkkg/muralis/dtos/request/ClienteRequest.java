@@ -10,7 +10,7 @@ public record ClienteRequest(
         String nome,
 
         @NotBlank(message = "O CPF do cliente não pode estar vazio.")
-        @Size(max = 14, message = "O CPF do cliente deve conter no máximo 14 caracteres.")
+        @Size(min = 14, max = 14, message = "O CPF do cliente deve conter 14 caracteres.")
         @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$", message = "O CPF deve seguir o seguinte formato: 123.456.789-00")
         String cpf,
 
