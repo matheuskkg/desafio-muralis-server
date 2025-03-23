@@ -39,7 +39,7 @@ public class Cliente {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
-        this.endereco = endereco != null ? endereco.trim() : null;
+        this.endereco = endereco != null && !endereco.trim().isEmpty() ? endereco.trim() : null;
     }
 
     public ClienteResponse toDto() {
@@ -47,7 +47,7 @@ public class Cliente {
                 id,
                 nome,
                 cpf,
-                dataNascimento != null ? dataNascimento.toString() : null,
+                dataNascimento,
                 endereco);
     }
 }

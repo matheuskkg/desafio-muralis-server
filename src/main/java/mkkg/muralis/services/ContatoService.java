@@ -2,6 +2,7 @@ package mkkg.muralis.services;
 
 import jakarta.transaction.Transactional;
 import mkkg.muralis.dtos.request.ContatoRequest;
+import mkkg.muralis.dtos.response.ContatoResponse;
 import mkkg.muralis.entities.Cliente;
 import mkkg.muralis.entities.Contato;
 import mkkg.muralis.entities.TipoContato;
@@ -74,7 +75,7 @@ public class ContatoService {
         salvar(validarContato(request));
     }
 
-    public List<Contato> buscarPorCliente(Integer id) {
+    public List<ContatoResponse> buscarPorCliente(Integer id) {
         return contatoRepository.findByClienteId(id);
     }
 
@@ -90,7 +91,8 @@ public class ContatoService {
         contatoRepository.deleteAllByClienteId(id);
     }
 
+    @Transactional
     public void excluir(Integer id) {
-        contatoRepository.deleteById(id);
+        contatoRepository.deleteContatoById(id);
     }
 }

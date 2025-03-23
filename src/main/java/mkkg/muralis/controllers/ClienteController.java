@@ -47,7 +47,7 @@ public class ClienteController {
 
     @GetMapping
     public ResponseEntity buscarTodosClientes() {
-        return ResponseEntity.status(HttpStatus.OK).body(clienteService.buscarTodos());
+        return ResponseEntity.status(HttpStatus.OK).body(clienteService.buscarTodos().stream().map(Cliente::toDto).toList());
     }
 
     @DeleteMapping("/{id}")
