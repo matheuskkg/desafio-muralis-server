@@ -40,20 +40,45 @@ public class ContatoService {
         }
     }
 
-    private boolean verificarContatoDuplicado(Cliente cliente, String valor) {
-        return contatoRepository.existsByClienteAndValor(cliente, valor);
-    }
-
-    private Contato validarContato(ContatoRequest request) {
-        if (request.tipo().equals("e-mail")) {
-            validarEmail(request.valor());
-        } else if (request.tipo().equals("telefone")) {
-            validarTelefone(request.valor());
+    /**
+     * Valida o contato com base no tipo de contato (e-mail ou telefone)
+     */
+    private void validarValorPorTipoContato(String tipo, String valor) {
+        if (tipo.equals("e-mail")) {
+            validarEmail(valor);
+        } else if (tipo.equals("telefone")) {
+            validarTelefone(valor);
         } else {
             throw new ContatoInvalidoException("Tipo de contato inválido.");
         }
+    }
 
-        if (verificarContatoDuplicado(request.cliente(), request.valor())) {
+    /**
+     * Um contato é duplicado caso o cliente já tenha um contato com este valor
+     *
+     * Edge case:
+     *      Uma edição de contato é válida caso não exista um contato deste cliente com este valor e ID diferente
+     *
+     *      Caso contatoId seja diferente de null, está sendo realizada a edição de um contato
+     */
+    private boolean verificarContatoDuplicado(Cliente cliente, String valor, Integer contatoId) {
+        Optional<Contato> optionalContato = contatoRepository.findByClienteIdAndValor(cliente.getId(), valor);
+
+        if (contatoId == null) {
+            return optionalContato.isPresent();
+        }
+
+        if (optionalContato.isPresent()) {
+            return optionalContato.get().getId() != contatoId;
+        }
+
+        return false;
+    }
+
+    private Contato validarContato(ContatoRequest request, Integer contatoId) {
+        validarValorPorTipoContato(request.tipo(), request.valor());
+
+        if (verificarContatoDuplicado(request.cliente(), request.valor(), contatoId)) {
             throw new ContatoDuplicadoException("Este cliente já possui o contato '" + request.valor() + "' salvo.");
         }
 
@@ -72,7 +97,7 @@ public class ContatoService {
     }
 
     public void cadastrar(ContatoRequest request) {
-        salvar(validarContato(request));
+        salvar(validarContato(request, null));
     }
 
     public List<ContatoResponse> buscarPorCliente(Integer id) {
@@ -80,7 +105,7 @@ public class ContatoService {
     }
 
     public void editar(Integer id, ContatoRequest request) {
-        Contato c = validarContato(request);
+        Contato c = validarContato(request, id);
         c.setId(id);
 
         salvar(c);
