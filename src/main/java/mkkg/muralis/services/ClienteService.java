@@ -73,6 +73,6 @@ public class ClienteService {
 
     public void excluir(Integer id) {
         contatoService.excluirTodosPorClienteId(id);
-        clienteRepository.deleteById(id);
+        clienteRepository.deleteClienteById(id);
     }
 }
