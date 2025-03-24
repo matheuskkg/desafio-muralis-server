@@ -1,5 +1,6 @@
 package mkkg.muralis.services;
 
+import jakarta.transaction.Transactional;
 import mkkg.muralis.dtos.request.ClienteRequest;
 import mkkg.muralis.entities.Cliente;
 import mkkg.muralis.exceptions.CpfEmUsoException;
@@ -71,6 +72,7 @@ public class ClienteService {
         return clienteRepository.findAllByOrderByNome();
     }
 
+    @Transactional
     public void excluir(Integer id) {
         contatoService.excluirTodosPorClienteId(id);
         clienteRepository.deleteClienteById(id);
